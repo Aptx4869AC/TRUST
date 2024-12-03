@@ -6,12 +6,12 @@
 - **Operator**: Aptx4869AC
 - **Changes**:
   - 提交了 `Baseline_c++`、`SDTE_c++` 与 `SDTE_SGX` ，其中包含了 Minibatch Gradient Descent for Linear Regression 的底层实现，明文版本和密文版本（AES-GCM）。
+  - 提交 `soci_plus_socket`，其中包含常用协议。该文件也可以看作是本地版 `TRUST_socket` 与 `SOCI_socket` 的结合。
 - **TODO**:
   - 本地版本的 `POCF_c++` 待上传
   - 本地版本的  `SOCI_c++` 待上传
   - socket 版本的 `POCF_c++` 待上传
   - socket 版本的 `SOCI_c++` 待上传
-  - socket 版本的 `SOCI+_c++` 待上传
   - SGX 版本的 TRUST，待定
   - SGX 版本的 SEAT，待定
 
