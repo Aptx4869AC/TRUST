@@ -10,14 +10,14 @@
 
 - #### **local_version**  
   
-  - `Baseline/`: 小批次梯度下降线性回归的 C++ 实现，明文版本。  
-  - `SDTE_C++/`: SDTE 协议的 C++ 实现，支持 AES 加密。  
-  - `SDTE_SGX/`: SDTE 协议的 SGX 版本，结合 AES 加密与 TEE。  
-  - `TRUST_c++/`: 包含 `SOCI+` 和 `TRUST` 协议的本地可运行版本，相当于  `SOCI+_c++` 和`TRUST_c++` 的实现。  
+  - `Baseline`: 小批次梯度下降线性回归的 C++ 实现，明文版本。  
+  - `SDTE_C++`: SDTE 协议的 C++ 实现，支持 AES 加密。  
+  - `SDTE_SGX`: SDTE 协议的 SGX 版本，结合 AES 加密与 TEE。  
+  - `TRUST_C++`: 包含 `SOCI+` 和 `TRUST` 协议的本地可运行版本，相当于  `SOCI+_C++` 和`TRUST_C++` 的实现。  
   
 - #### **socket_version**  
   
-  - 待上传  
+  - `soci_plus_socket` 
 
 
 
@@ -29,13 +29,13 @@
 
 - **Operator**: Aptx4869AC
 - **Changes**:
-  - 提交了 `Baseline_c++`、`SDTE_c++` 与 `SDTE_SGX`，其中包含了 Minibatch Gradient Descent for Linear Regression 的底层实现，明文版本和密文版本（AES-GCM）。
-  - 提交 `soci_plus_socket`，其中包含常用协议。该文件也可以看作是本地版 `TRUST_socket` 与 `SOCI+_socket` 的结合。
+  - 提交了 `Baseline_C++`、`SDTE_C++` 与 `SDTE_SGX`，其中包含了 Minibatch Gradient Descent for Linear Regression 的底层实现，明文版本和密文版本（AES-GCM）。
+  - 提交 `soci_plus_socket`，其中包含常用协议。该文件也可以看作是socket版 `TRUST_socket` 与 `SOCI+_socket` 的结合。
 - **TODO**:
-  - 本地版本的 `POCF_c++` 待上传
-  - 本地版本的 `SOCI_c++` 待上传
-  - socket 版本的 `POCF_c++` 待上传
-  - socket 版本的 `SOCI_c++` 待上传
+  - 本地版本的 `POCF_C++` 待上传
+  - 本地版本的 `SOCI_C++` 待上传
+  - socket 版本的 `POCF_C++` 待上传
+  - socket 版本的 `SOCI_C++` 待上传
   - SGX 版本的 TRUST，待定
   - SGX 版本的 SEAT，待定
 
@@ -45,7 +45,7 @@
 
 - **Operator**: Aptx4869AC  
 - **Changes**:  
-  - 提交了一个可直接运行的单程序 `TRUST_c++`，其中包含常用协议，方便调试。该文件也可以看作是本地版 `TRUST_c++` 与 `SOCI+_c++` 的结合。
+  - 提交了一个可直接运行的单程序 `TRUST_C++`，其中包含常用协议，方便调试。该文件也可以看作是本地版 `TRUST_C++` 与 `SOCI+_C++` 的结合。
 
 
 
