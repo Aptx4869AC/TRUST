@@ -31,13 +31,13 @@
 - **Changes**:
   - 提交了本地版本的 `POCF_C++`。
   - 提交了 `Baseline_C++`、`SDTE_C++` 与 `SDTE_SGX`，其中包含了 Minibatch Gradient Descent for Linear Regression 的底层实现，明文版本和密文版本（AES-GCM）。
-  - 提交 `soci_plus_socket`，其中包含常用协议。该文件也可以看作是socket版 `TRUST_socket` 与 `SOCI+_socket` 的结合。
+  - 提交 `SOCI+_socket`，其中包含常用协议。该文件也可以看作是socket版 `TRUST_socket` 与 `SOCI+_socket` 的结合。
 - **TODO**:
   - 本地版本的 `SOCI_C++` 待上传
   - socket 版本的 `POCF_socket` 待上传
   - socket 版本的 `SOCI_socket` 待上传
-  - SGX 版本的 TRUST，待定
-  - SGX 版本的 SEAT，待定
+  - SGX 版本的 TRUST，上传时间待定
+  - SGX 版本的 SEAT，上传时间待定
 
 <div align="left">
   <img src="https://img.shields.io/badge/V1-(2024.12.01)-blue" alt="v1" width="200"/>
