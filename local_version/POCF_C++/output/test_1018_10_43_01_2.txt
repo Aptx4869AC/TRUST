@@ -1,0 +1,13 @@
+
+
+KeyGen (30 average) time is  ------  10.229651 ms
+Enc (30 average) time is  ------  0.918078 ms
+Dec (30 average) time is  ------  0.912909 ms
+PDec + TDec (30 average) time is  ------  1.988059 ms
+HE_Addition (30 average) time is  ------  0.001297 ms
+HE_ScalarMul (30 average) time is  ------  0.005610 ms
+HE_Subtraction (30 average) time is  ------  0.014963 ms
+SMUL (30 average) time is  ------  9.607452 ms
+SCMP (30 average) time is  ------  4.659669 ms
+SSBA (30 average) time is  ------  14.719867 ms
+SDIV (10-bits) (30 average) time is  ------  945.963136 ms
