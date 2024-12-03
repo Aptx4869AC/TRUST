@@ -1,0 +1,20 @@
+enclave {
+    from "sgx_tsgxssl.edl" import *;
+    from "sgx_pthread.edl" import *;
+
+    untrusted {
+        void ocall_print_string([in, string] const char *str);
+    };
+
+    trusted {
+        public void Enclave_gradientDescent([in] unsigned char **ciphertext_X_train, size_t ciphertext_len_X_train, [in] unsigned char **tag_X_train,
+                                    [in] unsigned char **ciphertext_Y_train, size_t ciphertext_len_Y_train, [in] unsigned char **tag_Y_train,
+                                    [in] unsigned char **ciphertext_w, size_t ciphertext_len_w, [in] unsigned char **tag_w,
+                                    [in] unsigned char **ciphertext_b, size_t ciphertext_len_b, [in] unsigned char **tag_b,
+                                    [in] unsigned char **ciphertext_learningRate, size_t ciphertext_len_learningRate, [in] unsigned char **tag_learningRate,
+                                    size_t epochs, size_t batchSize,
+                                    [in,out] unsigned char **ciphertext_w_final, [in,out] size_t *ciphertext_len_w_final, [in,out] unsigned char **tag_w_final,
+                                    [in,out] unsigned char **ciphertext_b_final, [in,out] size_t *ciphertext_len_b_final, [in,out] unsigned char **tag_b_final);
+
+    };
+};
