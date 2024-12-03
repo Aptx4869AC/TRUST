@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/root/github/TRUST_cpp/local_version/Baseline/Plain_Test_Fish.cpp
+iostream
+-
+vector
+-
+fstream
+-
+sstream
+-
+gmp.h
+-
+omp.h
+-
+algorithm
+-
+cstdlib
+-
+ctime
+-
+random
+-
+cstring
+-
+omp.h
+-
+
