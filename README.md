@@ -1,9 +1,6 @@
-# TRUST
+# TRUST: A Toolkit for TEE-Assisted Secure Outsourced Computation over Integers
 
-基于门限 Paillier 加密算法（paililerTD, FastpaiTD），涵盖了 POCF、SOCI、SOCI+ 和 TRUST 等协议的实现。
-
-论文链接：[TRUST: A Toolkit for TEE-Assisted Secure Outsourced Computation over Integers](https://arxiv.org/abs/2412.01073)
-
+基于门限 Paillier 加密算法（paililerTD, FastpaiTD），涵盖了论文 [POCF](https://ieeexplore.ieee.org/abstract/document/7500106)、[SOCI](https://ieeexplore.ieee.org/abstract/document/9908577)、[SOCI+](https://arxiv.org/abs/2412.01073) 和 [TRUST](https://arxiv.org/abs/2412.01073) 等协议的实现。
 
 
 ## :memo: 文件概览
