@@ -18,29 +18,36 @@
   
 - #### **socket_version**  
   
+  - `POCF_socket` :
   - `SOCI+_socket` : 包含 `SOCI+` 和 `TRUST` 协议的socket可运行版本，相当于  `SOCI+_socket` 和`TRUST_socket` 的实现。
 
 
 
 ## :alarm_clock: 日志更新
+- **TODO**:
+  - 本地版本的 `SOCI_C++` 待上传
+  - socket 版本的 `SOCI_socket` 待上传
+  - SGX 版本的 TRUST，上传时间待定
+  - SGX 版本的 SEAT，上传时间待定
 
 <div align="left">
-  <img src="https://img.shields.io/badge/V2-(2024.12.02)-blue" alt="v2" width="200"/>
+  <img src="https://img.shields.io/badge/V3-(2024.12.04)-blue" alt="v3" width="200"/>
+</div>
+
+- **Changes**:
+  - 提交了`POCF_socket`。
+
+<div align="left">
+  <img src="https://img.shields.io/badge/V2-(2024.12.03)-blue" alt="v2" width="200"/>
 </div>
 
 - **Changes**:
   - 提交了本地版本的 `POCF_C++`。
   - 提交了 `Baseline_C++`、`SDTE_C++` 与 `SDTE_SGX`，其中包含了 Minibatch Gradient Descent for Linear Regression 的底层实现，明文版本和密文版本（AES-GCM）。
   - 提交 `SOCI+_socket`，其中包含常用协议。该文件也可以看作是socket版 `TRUST_socket` 与 `SOCI+_socket` 的结合。
-- **TODO**:
-  - 本地版本的 `SOCI_C++` 待上传
-  - socket 版本的 `POCF_socket` 待上传
-  - socket 版本的 `SOCI_socket` 待上传
-  - SGX 版本的 TRUST，上传时间待定
-  - SGX 版本的 SEAT，上传时间待定
 
 <div align="left">
-  <img src="https://img.shields.io/badge/V1-(2024.12.01)-blue" alt="v1" width="200"/>
+  <img src="https://img.shields.io/badge/V1-(2024.12.02)-blue" alt="v1" width="200"/>
 </div>
 
 - **Changes**:  
