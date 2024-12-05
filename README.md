@@ -10,6 +10,7 @@
   - `Baseline`: mini-batch 梯度下降线性回归的 C++ 实现，底层训练，明文版本
   - `SDTE_C++`: mini-batch 梯度下降线性回归基于 `SDTE` 的 C++ 实现，支持 AES 加密，密文版本 
   - `SDTE_SGX`: mini-batch 梯度下降线性回归基于 `SDTE` 的 SGX 实现，结合 AES 加密与 TEE，密文版本
+  - `SEAT_C++`: mini-batch 梯度下降线性回归基于 `SEAT` 的 C++ 实现，支持 FastPai 加密，密文版本
   - `POCF_C++`: `POCF` 协议的本地 C++ 可运行版本
   - `SOCI_C++`: `SOCI` 协议的本地 C++ 可运行版本
   - `TRUST_C++`: `SOCI+` 和 `TRUST` 协议的本地 C++ 可运行版本，相当于  `SOCI+_C++` 和`TRUST_C++` 的实现 
@@ -31,6 +32,12 @@
   - SGX 版本的 `TRUST`，上传时间待定
   - SGX 版本的 `SEAT`，上传时间待定
 
+<div align="left">
+  <img src="https://img.shields.io/badge/V4-(2024.12.05)-blue" alt="v4" width="200"/>
+</div>
+
+- **Changes**:
+  - 提交了`SEAT_C++`
 
 <div align="left">
   <img src="https://img.shields.io/badge/V3-(2024.12.04)-blue" alt="v3" width="200"/>
