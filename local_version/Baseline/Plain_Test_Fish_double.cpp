@@ -19,13 +19,11 @@
 
 using namespace std;
 
-int multi;
-
 /** 预测函数 **/
 // 多元线性回归的预测函数：y_hat = w1 * X[i][0] + w2 * X[i][1] + ... + wn * X[i][n-1] + b
-double predict(const vector<int> &x, const vector<double> &w, double b)
+double predict(const vector<double> &x, const vector<double> &w, double b)
 {
-    double y_hat = b * multi;
+    double y_hat = b;
     for (size_t j = 0; j < x.size(); ++j)
     {
         y_hat += w[j] * x[j];
@@ -41,16 +39,16 @@ double predict(const vector<int> &x, const vector<double> &w, double b)
  * @param b
  * @return
  */
-double computeLoss(const vector<vector<int>> &X, const vector<int> &Y, const vector<double> &w, double b)
+double computeLoss(const vector<vector<double>> &X, const vector<double> &Y, const vector<double> &w, double b)
 {
     double loss = 0.0;
     int n = X.size();
     for (int i = 0; i < n; ++i)
     {
         double y_hat = predict(X[i], w, b);
-        loss += pow(y_hat - Y[i], 2);
+        loss += (y_hat - Y[i]) * (y_hat - Y[i]);
     }
-    return loss / n;
+    return loss / (n * 1.0);
 }
 
 /**
@@ -61,16 +59,16 @@ double computeLoss(const vector<vector<int>> &X, const vector<int> &Y, const vec
  * @param b
  * @return
  */
-double computeR2(const vector<vector<int>> &X, const vector<int> &Y, const vector<double> &w, double b)
+double computeR2(const vector<vector<double>> &X, const vector<double> &Y, const vector<double> &w, double b)
 {
     double ss_tot = 0.0, ss_res = 0.0;
-    double mean_y = accumulate(Y.begin(), Y.end(), 0.0) / Y.size();
+    double mean_y = accumulate(Y.begin(), Y.end(), 0.0) / (Y.size() * 1.0);
 
     for (size_t i = 0; i < X.size(); ++i)
     {
         double y_hat = predict(X[i], w, b);
-        ss_res += pow(Y[i] - y_hat, 2);
-        ss_tot += pow(Y[i] - mean_y, 2);
+        ss_res += (Y[i] - y_hat) * (Y[i] - y_hat);
+        ss_tot += (Y[i] - mean_y) * (Y[i] - mean_y);
     }
 
     return 1 - (ss_res / ss_tot);
@@ -85,7 +83,7 @@ double computeR2(const vector<vector<int>> &X, const vector<int> &Y, const vecto
  * @param b
  * @return
  */
-double computeMAE(const vector<vector<int>> &X, const vector<int> &Y, const vector<double> &w, double b)
+double computeMAE(const vector<vector<double>> &X, const vector<double> &Y, const vector<double> &w, double b)
 {
     double mae = 0.0;
     for (size_t i = 0; i < X.size(); ++i)
@@ -93,22 +91,11 @@ double computeMAE(const vector<vector<int>> &X, const vector<int> &Y, const vect
         double y_hat = predict(X[i], w, b);
         mae += abs(y_hat - Y[i]);
     }
-    return mae / X.size();
+    return mae / (X.size() * 1.0);
 }
 
-
-/**
- * 梯度下降更新 w 和 b 参数
- * @param X
- * @param Y
- * @param w
- * @param b
- * @param learningRate
- * @param epochs
- * @param batchSize
- */
-void gradientDescent(const vector<vector<int>> &X, const vector<int> &Y, vector<double> &w, double &b,
-                     double learningRate, int epochs, int batchSize)
+void gradientDescent_double(const vector<vector<double>> &X, const vector<double> &Y, vector<double> &w, double &b,
+                            double learningRate, int epochs, int batchSize)
 {
     int n = X.size();       // 样本数
     int features = X[0].size(); // 特征数
@@ -153,13 +140,10 @@ void gradientDescent(const vector<vector<int>> &X, const vector<int> &Y, vector<
             for (int k = 0; k < features; ++k)
             {
                 dw[k] *= 2;
-                dw[k] /= currentBatchSize;
-                dw[k] /= (multi * multi);
+                dw[k] /= (currentBatchSize * 1.0);
             }
-
             db *= 2;
-            db /= currentBatchSize;
-            db /= multi;
+            db /= (currentBatchSize * 1.0);
 
             // 更新参数
             for (int k = 0; k < features; ++k)
@@ -167,9 +151,10 @@ void gradientDescent(const vector<vector<int>> &X, const vector<int> &Y, vector<
                 w[k] -= learningRate * dw[k];
             }
             b -= learningRate * db;
+
         }
         double loss = computeLoss(X, Y, w, b);
-        printf("Epoch %d, Loss: %f, b: %f\n", epoch, loss / (multi * multi), b);
+        printf("Epoch %d, Loss: %f, b: %f\n", epoch, loss, b);
         printf("Weights: ");
         for (const auto &weight: w)
         {
@@ -189,7 +174,6 @@ void gradientDescent(const vector<vector<int>> &X, const vector<int> &Y, vector<
     }
     printf("\n偏置: %f\n", b);
 }
-
 
 /**
  * 加载CSV文件的函数
@@ -372,15 +356,7 @@ bool loadCSV(const string &filePath, vector<vector<int>> &X, vector<int> &Y)
     return true;   // 文件读取成功
 }
 
-
-/**
- * 评价函数
- * @param X
- * @param Y
- * @param w
- * @param b
- */
-void evaluate(vector<vector<int>> &X, vector<int> &Y, vector<double> &w, double &b)
+void evaluate(vector<vector<double>> &X, vector<double> &Y, vector<double> &w, double &b)
 {
     // 计算评价指标
     double mse = computeLoss(X, Y, w, b);
@@ -388,13 +364,12 @@ void evaluate(vector<vector<int>> &X, vector<int> &Y, vector<double> &w, double 
     double mae = computeMAE(X, Y, w, b);
 
     cout << "------------------------------------------------------\n";
-    printf("MSE: %.4f\n", mse / (multi * multi));
+    printf("MSE: %.4f\n", mse);
     printf("R²: %.4f\n", r2);
-    printf("MAE: %.4f\n", mae / (multi));
+    printf("MAE: %.4f\n", mae);
     cout << "------------------------------------------------------\n";
 
 }
-
 
 int main()
 {
@@ -425,8 +400,34 @@ int main()
         cerr << "测试 CSV 文件读取失败！" << '\n';
     }
 
+
+    vector<vector<double>> X_train_double(X_train.size(), vector<double>(X_train[0].size())); // 初始化 X_train_double
+    vector<double> Y_train_double(Y_train.size()); // 初始化 Y_train_double
+
+    vector<vector<double>> X_test_double(X_test.size(), vector<double>(X_test[0].size())); // 初始化 X_test_double
+    vector<double> Y_test_double(Y_test.size()); // 初始化 Y_test_double
+
+
+    for (size_t i = 0; i < X_train.size(); ++i)
+    {
+        for (size_t j = 0; j < X_train[i].size(); ++j)
+        {
+            X_train_double[i][j] = (X_train[i][j] * 1.0) / 100.0;
+        }
+        Y_train_double[i] = (Y_train[i] * 1.0) / 100.0;
+    }
+
+
+    for (size_t i = 0; i < X_test.size(); ++i)
+    {
+        for (size_t j = 0; j < X_test[i].size(); ++j)
+        {
+            X_test_double[i][j] = (X_test[i][j] * 1.0) / 100.0;
+        }
+        Y_test_double[i] = (Y_test[i] * 1.0) / 100.0;
+    }
+
     int features = X_train[0].size(); // 获取特征数量
-    multi = 100;
 
     // 初始化参数
     vector<double> w(features, 0.0); // 初始化权重为 0
@@ -437,16 +438,16 @@ int main()
 
     // 明文版本
     start_time = omp_get_wtime();
-    gradientDescent(X_train, Y_train, w, b, learningRate, epochs, batchSize);    // 使用梯度下降进行训练
+    gradientDescent_double(X_train_double, Y_train_double, w, b, learningRate, epochs, batchSize);    // 使用梯度下降进行训练
     end_time = omp_get_wtime();
     cout << "------------------------------------------------------\n";
     printf("LinR time is  ------  %f ms\n", (end_time - start_time) * 1000);
     cout << "------------------------------------------------------\n";
 
     printf("评估训练集\n");
-    evaluate(X_train, Y_train, w, b);
+    evaluate(X_train_double, Y_train_double, w, b);
     printf("评估测试集\n");
-    evaluate(X_test, Y_test, w, b);
+    evaluate(X_test_double, Y_test_double, w, b);
 
     printf("Info: successfully returned.\n");
     return 0;

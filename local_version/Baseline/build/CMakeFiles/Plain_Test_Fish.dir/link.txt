@@ -1,1 +1,0 @@
-/usr/bin/c++    -rdynamic CMakeFiles/Plain_Test_Fish.dir/Plain_Test_Fish.cpp.o  -o Plain_Test_Fish  -lgmp -lpthread -fopenmp 

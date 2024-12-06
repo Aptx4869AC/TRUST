@@ -21,8 +21,9 @@ cmake --build .
 
 
 # 运行程序并将输出重定向到临时文件
-./Plain_Test_Student > output.log
-#./Plain_Test_Fish > output.log
+#./Plain_Test_Student > output.log
+./Plain_Test_Fish > output.log
+#./Plain_Test_Fish_double > output.log
 
 # 使用 sed 提取 Loss 信息
 sed -n 's/.*Loss: \([0-9]*\.[0-9]*\).*/\1/p' output.log > loss_log.txt

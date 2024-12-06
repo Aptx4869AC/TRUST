@@ -1,1 +1,0 @@
-/usr/bin/c++    -rdynamic CMakeFiles/Plain_Test_Student.dir/Plain_Test_Student.cpp.o  -o Plain_Test_Student  -lgmp -lpthread -fopenmp 
