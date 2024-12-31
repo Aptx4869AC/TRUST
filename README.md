@@ -13,56 +13,24 @@
   - `SEAT_C++`: mini-batch 梯度下降线性回归基于 `SEAT` 的 C++ 实现，支持 FastPai 加密，密文版本
   - `POCF_C++`: `POCF` 协议的本地 C++ 可运行版本
   - `SOCI_C++`: `SOCI` 协议的本地 C++ 可运行版本
-  - `TRUST_C++`: `SOCI+` 和 `TRUST` 协议的本地 C++ 可运行版本，相当于  `SOCI+_C++` 和`TRUST_C++` 的实现 
+  - `TRUST_C++`: `SOCI+` 和 `TRUST` 协议的本地 C++ 可运行版本，相当于  `SOCI+_C++` 和`TRUST_C++` 的实现，涵盖对比方案
   
 - #### **socket_version**  
   
   - `POCF_socket` :  `POCF` 协议的 socket 可运行版本，需要开多端口
   - `SOCI_socket` :  `SOCI` 协议的 socket 可运行版本，需要开多端口
-  - `SOCI+_socket` : 包含 `SOCI+` 和 `TRUST` 协议的 socket 可运行版本，相当于  `SOCI+_socket` 和`TRUST_socket` 的实现，需要开多端口
+  - `SOCI+_socket` : 包含 `SOCI+` 和 `TRUST` 协议的 socket 可运行版本，相当于  `SOCI+_socket` 和`TRUST_socket` 的实现，涵盖对比方案，需要开多端口
+  
+- #### **simple_version**
+
+  - `TRUST_C++`: `TRUST` 协议的本地 C++ 可运行版本，无对比方案
 
 
 
-## :alarm_clock: 日志更新
+## :alarm_clock: TODO
 
-<div align="left">
-  <img src="https://img.shields.io/badge/-TODO-critical" alt="TODO" width="80"/>
-</div>
-
-  - SGX 版本的 `TRUST`，上传时间待定
-  - SGX 版本的 `SEAT`，上传时间待定
-
-<div align="left">
-  <img src="https://img.shields.io/badge/V4-(2024.12.05)-blue" alt="v4" width="200"/>
-</div>
-
-- **Changes**:
-  - 提交了`SEAT_C++`
-
-<div align="left">
-  <img src="https://img.shields.io/badge/V3-(2024.12.04)-blue" alt="v3" width="200"/>
-</div>
-
-- **Changes**:
-  - 提交了`SOCI_C++`
-  - 提交了`POCF_socket`
-  - 提交了`SOCI_socket`
-
-<div align="left">
-  <img src="https://img.shields.io/badge/V2-(2024.12.03)-blue" alt="v2" width="200"/>
-</div>
-
-- **Changes**:
-  - 提交了 `POCF_C++`
-  - 提交了 `Baseline_C++`、`SDTE_C++` 与 `SDTE_SGX`，其中包含了 mini-batch 梯度下降线性回归的底层实现，明文版本和密文版本（AES-GCM、TEE）
-  - 提交了 `SOCI+_socket`，其中包含常用协议。该文件也可以看作是 `TRUST_socket` 与 `SOCI+_socket` 的结合
-
-<div align="left">
-  <img src="https://img.shields.io/badge/V1-(2024.12.02)-blue" alt="v1" width="200"/>
-</div>
-
-- **Changes**:  
-  - 提交了 `TRUST_C++`，其中包含常用协议。该文件也可以看作是 `TRUST_C++` 与 `SOCI+_C++` 的结合，调试方便
+  - SGX 版本的 `TRUST_SGX`，待论文录用上传
+  - SGX 版本的 `SEAT_SGX`，待论文录用上传
 
 
 
