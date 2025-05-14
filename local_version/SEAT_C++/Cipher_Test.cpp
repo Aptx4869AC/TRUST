@@ -348,27 +348,13 @@ void Cipher_gradientDescent(vector <mpz_t> &final_ew, mpz_t &final_eb, // 输出
                 cp.pai.add(edb, edb, eError);
                 mpz_clears(ey_hat, ey, eError, NULL);
             }
-//            for (int k = 0; k < features; ++k)
-//            {
-//                show_dec(edw[k], cp, csp);
-//            }
-//            cout << "------\n";
-//            show_dec(edb, cp, csp);
-//            cout << "--------------------------------------------------\n";
-
+            
             // 乘以学习率
             for (int k = 0; k < features; k++)
             {
                 sc.trust_fmul(edw[k], eLearningRate, edw[k], cp, csp); // 密文乘法
             }
             sc.trust_fmul(edb, eLearningRate, edb, cp, csp); // 密文乘法
-//            for (int k = 0; k < features; ++k)
-//            {
-//                show_dec(edw[k], cp, csp);
-//            }
-//            cout << "------\n";
-//            show_dec(edb, cp, csp);
-//            cout << "--------------------------------------------------\n";
 
             // 归一化处理
             /* 随机生成r1，实现密文除法，针对edb */
