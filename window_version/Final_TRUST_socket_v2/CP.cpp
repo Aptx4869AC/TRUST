@@ -1,3 +1,9 @@
+/******************************************************************************
+ * Author: Aptx4869AC 
+ * Created: 2024-12-01 
+ * GitHub: https://github.com/Aptx4869AC  
+ *****************************************************************************/
+
 #include "include/fastPai.h"
 #include "include/cp_protocol.h"
 #include "include/network.h"

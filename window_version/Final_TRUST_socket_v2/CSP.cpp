@@ -2,7 +2,6 @@
  * Author: Aptx4869AC 
  * Created: 2024-12-01 
  * GitHub: https://github.com/Aptx4869AC  
- * Last Modified: 2025-05-13 (Fixed pthread compatibility for MinGW)
  *****************************************************************************/
  
 #include "include/fastPai.h"

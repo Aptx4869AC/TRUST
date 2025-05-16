@@ -25,7 +25,10 @@
 
   - `TRUST_C++`: `TRUST` 协议的本地 C++ 可运行版本，无对比方案
 
+- #### **window_version**
 
+  - `Final_TRUST_socket` : 主动权在`CP.cpp`
+  - `Final_TRUST_socket_v2` : 主动权在 `Client.cpp`
 
 ## :alarm_clock: TODO
 
