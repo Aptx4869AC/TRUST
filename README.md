@@ -25,6 +25,10 @@
 
   - `TRUST_C++`: `TRUST` 协议的本地 C++ 可运行版本，无对比方案
 
+- #### **linux_version**
+
+  - `Final_TRUST_socket` : 主动权在`CP.cpp`
+
 - #### **window_version**
 
   - `Final_TRUST_socket` : 主动权在`CP.cpp`
@@ -36,7 +40,12 @@
   - SGX 版本的 `SEAT_SGX`，待论文录用上传
 
 
-
 ## License
+Windows和Linux平台的Socket实现存在显著性能差异。相同代码（`Final_TRUST_socket`）在Windows上效率接近串行版本，而在Linux上则较慢。
+这主要源于：
+  - 内核网络栈实现差异
+  - 进程调度机制不同
+  - TCP/IP协议栈在不同系统实现细节不同
+  - 内存管理和缓冲区优化程度不同
 
 如果学到了，**不要忘记点个Star** :sparkling_heart:

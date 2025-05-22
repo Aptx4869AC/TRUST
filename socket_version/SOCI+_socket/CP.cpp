@@ -223,7 +223,7 @@ int main()
     // 跳过表头
     getline(file, line);
 
-    int _epoch = 1;
+    int _epoch = 0;
 
     // Trust 协议
     while (getline(file, line))   // 逐行读取CSV文件的内容
@@ -302,7 +302,7 @@ int main()
 
 
         _epoch++;
-        if (_epoch > 10)
+        if (_epoch >= 10)
         {
             break;
         }
