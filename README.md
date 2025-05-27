@@ -42,8 +42,8 @@
 
 ## :alarm_clock: TODO
 
-- SGX 版本的 `TRUST_SGX`，待论文录用上传
-- SGX 版本的 `SEAT_SGX`，待论文录用上传
+- 具体代码，待论文录用上传
+- 具体代码，待论文录用上传
 
 
 
