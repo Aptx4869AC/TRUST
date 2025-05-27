@@ -122,3 +122,5 @@ Trust_FTRN (100 average) time is  ------  36.389111 ms
 ## License
 
 如果学到了，**不要忘记点个Star** :sparkling_heart:
+
+Copyright :copyright:2024 [Aptx4869AC](https://github.com/Aptx4869AC)
