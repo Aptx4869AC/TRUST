@@ -12,6 +12,53 @@
 using namespace PROTOCOLSPACE;
 using namespace PHESPACE;
 
+void division(double &res, mpz_t &value, long long multiple)
+{
+    if (multiple == 0)
+    {
+        cerr << "错误：除数不能为零！" << '\n';
+        return;
+    }
+    mpz_t integer, remainder, fractional;
+    mpz_inits(integer, remainder, fractional, NULL);
+
+    if (mpz_cmp_si(value, 0) > 0)
+    {
+        mpz_div_ui(integer, value, multiple);
+
+        mpz_t mod;
+        mpz_init(mod);
+        mpz_init_set_si(mod, multiple);
+        mpz_mod(fractional, value, mod);
+
+        // 转换为 int
+        long long integer_val = mpz_get_si(integer);
+        double fractional_val = mpz_get_si(fractional) / (multiple * 1.0);
+        res = integer_val + fractional_val;
+        mpz_clear(mod);
+    } else
+    {
+        mpz_t neg_value;
+        mpz_init(neg_value);
+        mpz_neg(neg_value, value);
+
+        mpz_div_ui(integer, neg_value, multiple);
+
+        mpz_t mod;
+        mpz_init(mod);
+        mpz_init_set_si(mod, multiple);
+        mpz_mod(fractional, neg_value, mod);
+
+        // 转换为 int
+        long long integer_val = mpz_get_si(integer);
+        double fractional_val = mpz_get_si(fractional) / (multiple * 1.0);
+        res = integer_val + fractional_val;
+        res *= -1;
+        mpz_clear(mod);
+        mpz_clear(neg_value);
+    }
+}
+
 int main()
 {
 
@@ -87,15 +134,53 @@ int main()
 
 
     printf("\n----------------------- 案例7 【负数支持】 -----------------------\n");
+    // 本质是模空间的代数性质（同余定理）
+    mpz_t neg_m;
+    mpz_init(neg_m);
+    mpz_neg(neg_m, m);
+    gmp_printf("-m = %Zd\n", neg_m);
+    pai.encrypt(eres, neg_m); // 负数处理已经隐藏在 encrypt()
+    gmp_printf("[-m] --- eres = %Zd\n", eres);
+    pai.decrypt(res, eres);
+    gmp_printf("res = %Zd\n", res);
 
     printf("\n----------------------- 案例8 【浮点数支持】 -----------------------\n");
-    int eps = 10; // 精度等级
+    // 本质是定点数编码
+    int alpha = 4; // 精度等级
+    mpz_t ten, eps, multiEps, inv_multiEps;
+    mpz_inits(ten, eps, multiEps, inv_multiEps, NULL);
+    mpz_set_si(ten, 10);
+    mpz_set_si(eps, 2 * alpha);
+    mpz_powm(multiEps, ten, eps, pai.pk.N_Square);
+    mpz_invert(inv_multiEps, multiEps, pai.pk.N);
+    printf("alpha = %d\n", alpha);
+    gmp_printf("eps = %Zd\n", eps);
+    gmp_printf("multiEps = %Zd\n", multiEps);
+    gmp_printf("inv_multiEps = %Zd\n", inv_multiEps);
 
-//   TODO
-//    mpz_powm(eres, em, neg_one, pai.pk.N_Square);
-//    gmp_printf("[m]^{-1} --- eres = %Zd\n", eres);
-//    pai.decrypt(res, eres);
-//    gmp_printf("res = %Zd\n", res);
+    mpz_t m1, m2;
+    mpz_inits(m1, m2, NULL);
+    double float_m1 = 4869.2345;
+    mpz_set_si(m1, float_m1 * pow(10, 2 * alpha));
+    gmp_printf("m1 = %Zd\n", m1);
+    double float_m2 = 1412.6789;
+    mpz_set_si(m2, float_m2 * pow(10, 2 * alpha));
+    gmp_printf("m2 = %Zd\n", m2);
+
+    mpz_t em1, em2;
+    mpz_inits(em1, em2, NULL);
+    pai.encrypt(em1, m1);
+    pai.encrypt(em2, m2);
+    gmp_printf("[m1] --- eres = %Zd\n", em1);
+    gmp_printf("[m2] --- eres = %Zd\n", em2);
+    mpz_mul(eres, em1, em2);
+    mpz_mod(eres, eres, pai.pk.N_Square);
+    pai.decrypt(res, eres);
+    gmp_printf("res = %Zd\n", res);
+
+    double value;
+    division(value, res, pow(10, 2 * alpha));
+    printf("m1 + m2 = %.4f\n", value);
 
     printf("\n\n");
 
