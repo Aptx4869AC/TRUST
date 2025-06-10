@@ -1,0 +1,58 @@
+enclave {
+    trusted {
+        public void Enclave_Init([in]unsigned char** seal_sk2, [in] size_t* sk2_size,
+                             [in]unsigned char** seal_n, [in] size_t* n_size,
+                             [in]unsigned char** seal_h_N, [in] size_t* h_N_size, int temp_L_k);
+
+        public void Enclave_Trust_FMUL([in,out] unsigned char** seal_res,[in,out] size_t * res_size,
+                            [in] unsigned char** seal_X,[in] size_t* X_size,
+                            [in] unsigned char** seal_X_PDec_1,[in] size_t* X_PDec_1_size,
+                            [in] unsigned char** seal_Y,[in] size_t* Y_size,
+                            [in] unsigned char** seal_em_2,[in] size_t* em_2_size);
+
+        public void Enclave_Trust_FCMP([in,out] unsigned char** seal_res,[in,out] size_t * res_size,
+                            [in] unsigned char** seal_ed,[in] size_t* ed_size,
+                            [in] unsigned char** seal_ed_1,[in] size_t* ed_1_size,
+                            [in] unsigned char** seal_epi,[in] size_t* epi_size);
+
+        public void Enclave_Trust_FEQL([in,out] unsigned char** seal_res,[in,out] size_t * res_size,
+                            [in] unsigned char** seal_ed_1,[in] size_t* ed_1_size,
+                            [in] unsigned char** seal_ed_1_P1,[in] size_t* ed_1_P1_size,
+                            [in] unsigned char** seal_epi_1,[in] size_t* epi_1_size,
+                            [in] unsigned char** seal_ed_2,[in] size_t* ed_2_size,
+                            [in] unsigned char** seal_ed_2_P1,[in] size_t* ed_2_P1_size,
+                            [in] unsigned char** seal_epi_2,[in] size_t* epi_2_size);
+
+        public void Enclave_Trust_FABS([in,out] unsigned char** seal_res,[in,out] size_t * res_size,
+                            [in] unsigned char** seal_ed,[in] size_t* ed_size,
+                            [in] unsigned char** seal_ed_1,[in] size_t* ed_1_size,
+                            [in] unsigned char** seal_em_1pi,[in] size_t* em_1pi_size,
+                            [in] unsigned char** seal_em_1,[in] size_t* em_1_size);
+
+        public void Enclave_Trust_FTRN_v1([in,out] unsigned char** seal_res,[in,out] size_t * res_size,
+                            [in] unsigned char** seal_em_3_sub_m_2,[in] size_t* em_3_sub_m_2_size,
+                            [in] unsigned char** seal_em_2,[in] size_t* em_2_size,
+                            [in] unsigned char** seal_ed_1,[in] size_t* ed_1_size,
+                            [in] unsigned char** seal_ed_1_P1,[in] size_t* ed_1_P1_size,
+                            [in] unsigned char** seal_epi_1_m_3_sub_m_2,[in] size_t* epi_1_m_3_sub_m_2_size,
+                            [in] unsigned char** seal_ed_2,[in] size_t* ed_2_size,
+                            [in] unsigned char** seal_ed_2_P1,[in] size_t* ed_2_P1_size,
+                            [in] unsigned char** seal_epi_2_m_3_sub_m_2,[in] size_t* epi_2_m_3_sub_m_2_size);
+
+        public void Enclave_Trust_FTRN_v2([in,out] unsigned char** seal_res,[in,out] size_t * res_size,
+                            [in] unsigned char** seal_em_3,[in] size_t* em_3_size,
+                            [in] unsigned char** seal_em_2,[in] size_t* em_2_size,
+                            [in] unsigned char** seal_ed,[in] size_t* ed_size,
+                            [in] unsigned char** seal_ed_1,[in] size_t* ed_1_size,
+                            [in] unsigned char** seal_epi_m_3_sub_m_2,[in] size_t* epi_m_3_sub_m_2_size);
+
+        public void Enclave_PDec([in,out]unsigned char** seal_pc, [in,out]size_t * pc_size,
+                                 [in] unsigned char** seal_c,  [in] size_t*  c_size);
+        public void Enclave_Release();
+    };
+
+    untrusted {
+        void ocall_print_string([in, string] const char *str);
+    };
+};
+
