@@ -34,15 +34,7 @@
   - `Final_TRUST_socket` : 主动权在`CP.cpp`
   - `Final_TRUST_socket_v2` : 主动权在 `Client.cpp`
 
-
-
-## :alarm_clock: TODO
-
-  - SGX 版本的 `TRUST_SGX`，待论文录用上传
-  - SGX 版本的 `SEAT_SGX`，待论文录用上传
-
-
-
+  
 ## :pencil2: Remark
 
 Windows和Linux平台的Socket实现存在显著性能差异。相同代码（`Final_TRUST_socket`）在Windows上效率接近串行版本，而在Linux上则较慢。

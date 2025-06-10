@@ -38,7 +38,6 @@ int main()
     Paillier pai(keyGen.pk, keyGen.sk, sigma);
 
     int epoch = 10;
-    int Trust_epoch = 10;
     start_time = omp_get_wtime();
     for (int i = 0; i < 10; i++)
     {
@@ -117,6 +116,8 @@ int main()
     }
 
 
+
+    int Trust_epoch = 10;
     /** 开销测试：Trust协议 **/
     for (int i = 0; i < Trust_epoch; i++)
     {
@@ -189,6 +190,52 @@ int main()
 //        printf("------------------\n");
         mpz_clears(m_1, m_2, m_3, em_1, em_2, em_3, eres, res, NULL);
     }
+
+    /** 特殊测试 **/
+    mpz_t m, zero, one, neg_one, res, em, ezero, eone, eneg_one, eres;
+    mpz_inits(m, zero, one, neg_one, res, em, ezero, eone, eneg_one, eres, NULL);
+    mpz_rrandomb(m, randstate, 8);
+    mpz_set_si(zero, 0);
+    mpz_set_si(one, 1);
+    mpz_set_si(neg_one, -1);
+    pai.encrypt(em, m);
+    pai.encrypt(ezero, zero);
+    pai.encrypt(eone, one);
+    pai.encrypt(eneg_one, neg_one);
+    gmp_printf("m = %Zd\n", m);
+    gmp_printf("em = %Zd\n", em);
+
+    mpz_mul(eres, em, ezero);
+    mpz_mod(eres, eres, pai.pk.N_Square);
+    gmp_printf("[m] \cdot [0] --- eres = %Zd\n", eres);
+    pai.decrypt(res, eres);
+    gmp_printf("res = %Zd\n", res);
+
+    mpz_mul(eres, em, eone);
+    mpz_mod(eres, eres, pai.pk.N_Square);
+    gmp_printf("[m] \cdot [1] --- eres = %Zd\n", eres);
+    pai.decrypt(res, eres);
+    gmp_printf("res = %Zd\n", res);
+
+    mpz_mul(eres, em, eneg_one);
+    mpz_mod(eres, eres, pai.pk.N_Square);
+    gmp_printf("[m] \cdot [-1] --- eres = %Zd\n", eres);
+    pai.decrypt(res, eres);
+    gmp_printf("res = %Zd\n", res);
+
+
+    mpz_powm(eres, em, zero, pai.pk.N_Square);
+    gmp_printf("[m]^0 --- eres = %Zd\n", eres);
+    pai.decrypt(res, eres);
+    gmp_printf("res = %Zd\n", res);
+    mpz_powm(eres, em, one, pai.pk.N_Square);
+    gmp_printf("[m]^1 --- eres = %Zd\n", eres);
+    pai.decrypt(res, eres);
+    gmp_printf("res = %Zd\n", res);
+    mpz_powm(eres, em, neg_one, pai.pk.N_Square);
+    gmp_printf("[m]^{-1} --- eres = %Zd\n", eres);
+    pai.decrypt(res, eres);
+    gmp_printf("res = %Zd\n", res);
 
     printf("\n\n");
     printf("KeyGen (%d average) time is  ------  %f ms\n", 10, average_time_keygen / 10 * 1000);
