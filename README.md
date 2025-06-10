@@ -20,7 +20,16 @@
   - `POCF_socket` :  `POCF` 协议的 socket 可运行版本，需要开多端口
   - `SOCI_socket` :  `SOCI` 协议的 socket 可运行版本，需要开多端口
   - `SOCI+_socket` : 包含 `SOCI+` 和 `TRUST` 协议的 socket 可运行版本，相当于  `SOCI+_socket` 和`TRUST_socket` 的实现，涵盖对比方案，需要开多端口
-  
+
+- #### **sgx_version**
+
+  - `TRUST_SGX` : `TRUST` 的 SGX 实现
+  - `SEAT_SGX` : `SEAT` 的 SGX 实现
+
+- #### **diy_version**
+
+  - 做任何你想做的操作（e.g., 浮点数，负数）
+
 - #### **simple_version**
 
   - `TRUST_C++`: `TRUST` 协议的本地 C++ 可运行版本，无对比方案
