@@ -1,7 +1,7 @@
 # TRUST: A Toolkit for TEE-Assisted Secure Outsourced Computation over Integers
 
 ### Abstract
-Abstract—Secure outsourced computation (SOC) provides secure computing services by taking advantage of the computation power of cloud computing and the technology of privacy computing (e.g., homomorphic encryption). Expanding computational operations on encrypted data (e.g., enabling complex calculations directly over ciphertexts) and broadening the applicability of SOC across diverse use cases remain critical yet challenging research topics in the field. Nevertheless, previous SOC solutions frequently lack the computational efficiency and adaptability required to fully meet evolving demands. To this end, in this paper, we propose a toolkit for TEE-assisted (Trusted Execution Environment) SOC over integers, named TRUST. In terms of system architecture, TRUST falls in a single TEE-equipped cloud server only through seamlessly integrating the computation of REE (Rich Execution Environment) and TEE. In consideration of TEE being difficult to permanently store data and being vulnerable to attacks, we introduce a (2, 2)-threshold homomorphic cryptosystem to fit the hybrid computation between REE and TEE. Additionally, we carefully design a suite of SOC protocols supporting unary, binary and ternary operations. To achieve applications, we present SEAT, secure data trading based on TRUST. Security analysis demonstrates that TRUST enables SOC, avoids collusion attacks among multiple cloud servers, and mitigates potential secret leakage risks within TEE (e.g., from side-channel attacks). Experimental evaluations indicate that TRUST outperforms the state-of-the-art and requires no alignment of data as well as any network communications. Furthermore, SEAT is as effective as the Baseline without any data protection.
+Secure outsourced computation (SOC) provides secure computing services by taking advantage of the computation power of cloud computing and the technology of privacy computing (e.g., homomorphic encryption). Expanding computational operations on encrypted data (e.g., enabling complex calculations directly over ciphertexts) and broadening the applicability of SOC across diverse use cases remain critical yet challenging research topics in the field. Nevertheless, previous SOC solutions frequently lack the computational efficiency and adaptability required to fully meet evolving demands. To this end, in this paper, we propose a toolkit for TEE-assisted (Trusted Execution Environment) SOC over integers, named TRUST. In terms of system architecture, TRUST falls in a single TEE-equipped cloud server only through seamlessly integrating the computation of REE (Rich Execution Environment) and TEE. In consideration of TEE being difficult to permanently store data and being vulnerable to attacks, we introduce a (2, 2)-threshold homomorphic cryptosystem to fit the hybrid computation between REE and TEE. Additionally, we carefully design a suite of SOC protocols supporting unary, binary and ternary operations. To achieve applications, we present SEAT, secure data trading based on TRUST. Security analysis demonstrates that TRUST enables SOC, avoids collusion attacks among multiple cloud servers, and mitigates potential secret leakage risks within TEE (e.g., from side-channel attacks). Experimental evaluations indicate that TRUST outperforms the state-of-the-art and requires no alignment of data as well as any network communications. Furthermore, SEAT is as effective as the Baseline without any data protection.
 
 ### Introduction
 
@@ -50,14 +50,18 @@ Abstract—Secure outsourced computation (SOC) provides secure computing service
   
 ## :pencil2: Remark
 
-Windows和Linux平台的Socket实现存在显著性能差异。相同代码（`Final_TRUST_socket`）在Windows上效率接近串行版本，而在Linux上则较慢。
-这主要源于：
+一个值得思考的现象，当我们的实验将高精度计算（如 **GMP**）与网络通信（**Socket**）结合时，在Linux上的计算性能远低于Windows。
+    - 在Windows上，网络版本的计算效率几乎与纯计算版本（无网络通信）持平。
+    - 在Linux上，完全相同的代码其计算性能却会显著下降。
 
-  - 内核网络栈实现差异
-  - 进程调度机制不同
-  - TCP/IP协议栈在不同系统实现细节不同
-  - 内存管理和缓冲区优化程度不同
+即便我们①切换网络模式（socket长连接、socket短连接、HTTP），②更换大数库（例如，从GMP替换为NTL）,依旧有如此现象。 
+我们认为，性能差异的根源并非网络协议栈本身的速度，而在于网络I/O活动对CPU密集型计算任务产生的“副作用”，这种副作用因操作系统的调度策略不同而异。
 
+在Linux环境下，即使是轻微的网络I/O活动，也会促使操作系统调度器更频繁地中断计算线程，并将其在不同CPU核心间迁移。每一次迁移都可能导致昂贵的CPU缓存失效 (Cache Miss)，迫使数据从主内存重新加载，从而严重拖慢了GMP的高精度计算速度。相比之下，Windows的调度策略在这种混合负载下表现得更为稳定，使得计算线程免受此类干扰，因而维持了接近纯计算版本的性能。
+
+Winodw `simple_version/TRUST_C++` - Windows Performance Toolkit
+
+Winodw `socket_version/SOCI+_socket` - Windows Performance Toolkit
 
 Linux `simple_version/TRUST_C++` - perf report
   - 733 context-switches                                                                        
@@ -68,9 +72,12 @@ Linux  `socket_version/SOCI+_socket`
   - 68 cpu-migrations
 
 
-### Window
+相同代码（`Final_TRUST_socket`）在Windows/Linux的时间开销测试。
+
+#### Window
 
 ```shell
+// Final_TRUST_socket
 [epoch = 80] --- m_1 = 363, m_2 = 19, m_3 = 217
 [epoch = 81] --- m_1 = -613, m_2 = -297, m_3 = 254
 [epoch = 82] --- m_1 = 1000, m_2 = 383, m_3 = 203
@@ -99,9 +106,10 @@ Trust_FABS (100 average) time is  ------  14.040010 ms
 Trust_FTRN (100 average) time is  ------  27.969992 ms
 ```
 
-### Linux
+#### Linux
 
 ```shell
+// Final_TRUST_socket
 [epoch = 80] --- m_1 = 363, m_2 = 19, m_3 = 217
 [epoch = 81] --- m_1 = -613, m_2 = -297, m_3 = 254
 [epoch = 82] --- m_1 = 1000, m_2 = 383, m_3 = 203
