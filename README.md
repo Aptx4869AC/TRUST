@@ -1,7 +1,11 @@
 # TRUST: A Toolkit for TEE-Assisted Secure Outsourced Computation over Integers
 
-基于门限 Paillier 加密算法（paililerTD, FastpaiTD），涵盖了论文 [POCF](https://ieeexplore.ieee.org/abstract/document/7500106)、[SOCI](https://ieeexplore.ieee.org/abstract/document/9908577)、[SOCI+](https://ieeexplore.ieee.org/abstract/document/10531248) 和 [TRUST](https://arxiv.org/abs/2412.01073) 等协议的实现。
+### Abstract
+Abstract—Secure outsourced computation (SOC) provides secure computing services by taking advantage of the computation power of cloud computing and the technology of privacy computing (e.g., homomorphic encryption). Expanding computational operations on encrypted data (e.g., enabling complex calculations directly over ciphertexts) and broadening the applicability of SOC across diverse use cases remain critical yet challenging research topics in the field. Nevertheless, previous SOC solutions frequently lack the computational efficiency and adaptability required to fully meet evolving demands. To this end, in this paper, we propose a toolkit for TEE-assisted (Trusted Execution Environment) SOC over integers, named TRUST. In terms of system architecture, TRUST falls in a single TEE-equipped cloud server only through seamlessly integrating the computation of REE (Rich Execution Environment) and TEE. In consideration of TEE being difficult to permanently store data and being vulnerable to attacks, we introduce a (2, 2)-threshold homomorphic cryptosystem to fit the hybrid computation between REE and TEE. Additionally, we carefully design a suite of SOC protocols supporting unary, binary and ternary operations. To achieve applications, we present SEAT, secure data trading based on TRUST. Security analysis demonstrates that TRUST enables SOC, avoids collusion attacks among multiple cloud servers, and mitigates potential secret leakage risks within TEE (e.g., from side-channel attacks). Experimental evaluations indicate that TRUST outperforms the state-of-the-art and requires no alignment of data as well as any network communications. Furthermore, SEAT is as effective as the Baseline without any data protection.
 
+### Introduction
+
+安全外包计算领域，基于门限 Paillier 加密算法（PaililerTD, FastPaiTD），涵盖了论文 [POCF](https://ieeexplore.ieee.org/abstract/document/7500106)、[SOCI](https://ieeexplore.ieee.org/abstract/document/9908577)、[SOCI+](https://ieeexplore.ieee.org/abstract/document/10531248) 和 [TRUST](https://arxiv.org/abs/2412.01073) 的实现。
 
 ## :memo: 文件概览
 
