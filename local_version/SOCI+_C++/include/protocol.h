@@ -30,14 +30,17 @@ namespace PROTOCOLSPACE
          * Weiquan SOCI+ verison 密文乘法
          */
         void smul(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * Weiquan SOCI+ verison 密文比较
          */
         void scmp(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * Weiquan SOCI+ verison 密文符号位获取
          */
         void ssba(mpz_t s_x, mpz_t u_x, mpz_t ex, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * Weiquan SOCI+ verison 密文除法
          */
@@ -48,14 +51,17 @@ namespace PROTOCOLSPACE
          * SOCI-TEE verison 密文乘法
          */
         void tee_smul(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * SOCI-TEE verison 密文比较
          */
         void tee_scmp(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * SOCI-TEE verison 密文绝对值
          */
         void tee_sabs(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * SOCI-TEE verison 密文除法
          */
@@ -65,22 +71,27 @@ namespace PROTOCOLSPACE
          * TRUST verison 密文乘法
          */
         void trust_fmul(mpz_t res, mpz_t em_1, mpz_t em_2, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * TRUST verison 密文比较
          */
         void trust_fcmp(mpz_t res, mpz_t em_1, mpz_t em_2, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * TRUST verison 密文相等判断
          */
         void trust_feql(mpz_t res, mpz_t em_1, mpz_t em_2, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * TRUST verison 密文绝对值
          */
         void trust_fabs(mpz_t res, mpz_t em_1, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * TRUST verison 密文三目运算，论文版本
          */
         void trust_ftrn_version1(mpz_t res, mpz_t em_1, mpz_t em_2, mpz_t em_3, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * TRUST verison 密文三目运算，本人自己开发更高效方案，非论文版本
          */
@@ -90,14 +101,17 @@ namespace PROTOCOLSPACE
          * Zhao SOCI verison 密文除法
          */
         void online_smul(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * Zhao SOCI verison 密文比较
          */
         void online_scmp(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * Zhao SOCI verison 密文符号位获取
          */
         void online_ssba(mpz_t s_x, mpz_t u_x, mpz_t ex, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * Zhao SOCI verison 密文除法
          */
@@ -108,18 +122,22 @@ namespace PROTOCOLSPACE
          * 改进 POCF verison，安全
          */
         void online_seqc(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * 改进 POCF verison，安全
          */
         void online_smms(mpz_t A, mpz_t I, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * 改进 POCF verison，安全
          */
         void online_sgcd(mpz_t res, mpz_t ex, mpz_t ey, int ell, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * 改进 POCF verison，安全
          */
         void online_sexp(mpz_t res, mpz_t ex, mpz_t ey, PaillierThdDec cp, PaillierThdDec csp);
+
         /**
          * 改进 POCF verison，此版本不完善，不安全
          */
@@ -1404,7 +1422,7 @@ namespace PROTOCOLSPACE
     }
 
     void protocol::online_sinv(mpz_t res, mpz_t ex, mpz_t em, int ell, PaillierThdDec cp, PaillierThdDec csp,
-                                Paillier pai)
+                               Paillier pai)
     {
         /*
         // Step-1
@@ -1836,7 +1854,7 @@ namespace PROTOCOLSPACE
 
     protocol::~protocol()
     {}
-    
+
     void check_sabs(int i, mpz_t result_cmp_x_y, mpz_t x, mpz_t y, Paillier pai)
     {
         mpz_t z, answer;

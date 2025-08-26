@@ -1,6 +1,6 @@
 /******************************************************************************
  * Author: Aptx4869AC
- * Created: 2024-12-31
+ * Created: 2024-12-01
  * GitHub: https://github.com/Aptx4869AC
  *****************************************************************************/
 
@@ -19,6 +19,7 @@ int main()
     double average_time_keygen = 0;
     double average_time_enc = 0;
     double average_time_dec = 0;
+
     double average_time_HE_Addition = 0;
     double average_time_HE_ScalarMul = 0;
     double average_time_HE_Subtraction = 0;
@@ -29,7 +30,6 @@ int main()
     double average_time_Trust_FEQL = 0;
     double average_time_Trust_FABS = 0;
     double average_time_Trust_FTRN_v1 = 0;
-    double average_time_Trust_FTRN_v2 = 0;
 
     k = 112; // 控制安全强度
     sigma = 128; // 控制比特串大小，如随机数
@@ -38,6 +38,8 @@ int main()
     Paillier pai(keyGen.pk, keyGen.sk, sigma);
 
     int epoch = 10;
+    int TEE_epoch = 10;
+    int Trust_epoch = 10;
     start_time = omp_get_wtime();
     for (int i = 0; i < 10; i++)
     {
@@ -51,7 +53,7 @@ int main()
     PaillierThdDec csp = PaillierThdDec(psk[1].N, psk[1].partial_key, keyGen.pk, sigma);
 
     /**
-     * 开销测试：：FastPai下基础加密原语、WQ的SOCI+离线在线结合、Zhao的SOCI协议在线版本
+     * 开销测试：：FastPai下基础加密原语
      */
     for (int i = 0; i < epoch; i++)
     {
@@ -112,13 +114,15 @@ int main()
         average_time_HE_Subtraction += (end_time - start_time);
 //        printf("%d [HE_Subtraction] time is  ------  %f ms\n", i, (end_time - start_time) * 1000);
 
+//        printf("----------------------------------------------------------\n");
+
         mpz_clears(a, ea, a1, a2, a_cp, a_csp, NULL);
     }
 
 
-
-    int Trust_epoch = 10;
-    /** 开销测试：Trust协议 **/
+    /**
+     * 开销测试：：Trust协议
+     */
     for (int i = 0; i < Trust_epoch; i++)
     {
         protocol sc;
@@ -137,28 +141,28 @@ int main()
 //        gmp_printf("m_2 = %Zd\n", m_2);
 //        gmp_printf("m_3 = %Zd\n", m_3);
 
-        /** 密文乘法 **/
+        // MUL
         start_time = omp_get_wtime();
         sc.trust_fmul(eres, em_1, em_2, cp, csp);
         end_time = omp_get_wtime();
         check_fmul(i, eres, m_1, m_2, pai);
         average_time_Trust_FMUL += (end_time - start_time);
 
-        /** 密文比较 **/
+        // CMP
         start_time = omp_get_wtime();
         sc.trust_fcmp(eres, em_1, em_2, cp, csp);
         end_time = omp_get_wtime();
         check_fcmp(i, eres, m_1, m_2, pai);
         average_time_Trust_FCMP += (end_time - start_time);
 
-        /** 密文判断相等 **/
+        // EQL
         start_time = omp_get_wtime();
         sc.trust_feql(eres, em_1, em_2, cp, csp);
         end_time = omp_get_wtime();
         check_feql(i, eres, m_1, m_2, pai);
         average_time_Trust_FEQL += (end_time - start_time);
 
-        /** 密文绝对值 **/
+        // ABS
         start_time = omp_get_wtime();
         sc.trust_fabs(eres, em_1, cp, csp);
         end_time = omp_get_wtime();
@@ -168,31 +172,18 @@ int main()
 //        mpz_set_si(m_1, 1);
 //        pai.encrypt(em_1, m_1);
 
-        /** 三目运算，此版本是论文里面的 **/
+        // TRN，此版本是论文里面的
         start_time = omp_get_wtime();
         sc.trust_ftrn_version1(eres, em_1, em_2, em_3, cp, csp);
         end_time = omp_get_wtime();
         check_ftrn(i, eres, m_1, m_2, m_3, pai);
         average_time_Trust_FTRN_v1 += (end_time - start_time);
-
-        int pi = (int) random() % 2;
-        mpz_set_si(m_1, pi);
-        pai.encrypt(em_1, m_1);
-
-        /** 三目运算，此版本是未写在论文里面的 **/
-//        start_time = omp_get_wtime();
-//        sc.trust_ftrn_version2(eres, em_1, em_2, em_3, cp, csp);
-//        end_time = omp_get_wtime();
-//        check_ftrn(i, eres, m_1, m_2, m_3, pai);
-//        average_time_Trust_FTRN_v2 += (end_time - start_time);
-
-
 //        printf("------------------\n");
         mpz_clears(m_1, m_2, m_3, em_1, em_2, em_3, eres, res, NULL);
     }
 
     printf("\n\n");
-    printf("KeyGen (%d average) time is  ------  %f ms\n", 10, average_time_keygen / 10 * 1000);
+    printf("KeyGen (%d average) time is  ------  %f ms\n", epoch, average_time_keygen / epoch * 1000);
     printf("Enc (%d average) time is  ------  %f ms\n", epoch, average_time_enc / epoch * 1000);
     printf("Dec (%d average) time is  ------  %f ms\n", epoch, average_time_dec / epoch * 1000);
     printf("PDec + TDec (%d average) time is  ------  %f ms\n", epoch, average_time_PDec_TDec / epoch * 1000);
@@ -205,7 +196,6 @@ int main()
     printf("Trust_FEQL (%d average) time is  ------  %f ms\n", Trust_epoch, average_time_Trust_FEQL / Trust_epoch * 1000);
     printf("Trust_FABS (%d average) time is  ------  %f ms\n", Trust_epoch, average_time_Trust_FABS / Trust_epoch * 1000);
     printf("Trust_FTRN (%d average) time is  ------  %f ms\n", Trust_epoch, average_time_Trust_FTRN_v1 / Trust_epoch * 1000);
-
 
     return 0;
 }

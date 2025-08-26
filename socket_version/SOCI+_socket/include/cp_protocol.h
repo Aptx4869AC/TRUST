@@ -1099,21 +1099,34 @@ void CP_Trust_FTRN_version2(mpz_t eres, mpz_t em_1, mpz_t em_2, mpz_t em_3, Pail
  * @param y
  * @param pai
  */
-void check_smul(int i, mpz_t result_cxy, mpz_t x, mpz_t y, Paillier pai)
+void check_smul(int i, mpz_t eres, mpz_t m_1, mpz_t m_2, Paillier pai)
 {
-    mpz_t z, xy;
-    mpz_inits(z, xy, NULL);
-    pai.decrypt(z, result_cxy);
-    mpz_mul(xy, x, y);
-    if (mpz_cmp(z, xy) != 0)
+    mpz_t half_N;
+    mpz_init(half_N);
+    mpz_div_ui(half_N, pai.pk.N, 2);
+    if (mpz_cmp(m_1, half_N) > 0)
     {
-        gmp_printf("Z = %Zd\n", z);
-        gmp_printf("%Zd * %Zd = %Zd\n", x, y, xy);
+        mpz_sub(m_1, m_1, pai.pk.N);
+    }
+    if (mpz_cmp(m_2, half_N) > 0)
+    {
+        mpz_sub(m_2, m_2, pai.pk.N);
+    }
+
+    mpz_t res, m_1_mul_m_2;
+    mpz_inits(res, m_1_mul_m_2, NULL);
+    mpz_mul(m_1_mul_m_2, m_1, m_2);
+
+    pai.decrypt(res, eres);
+    if (mpz_cmp(res, m_1_mul_m_2) != 0)
+    {
+        gmp_printf("res = %Zd\n", res);
+        gmp_printf("%Zd * %Zd = %Zd\n", m_1, m_2, m_1_mul_m_2);
         printf("SMUL error!\n");
         printf("i = %d is error \n", i);
         exit(-1);
     }
-    mpz_clears(z, xy, NULL);
+    mpz_clears(res, m_1_mul_m_2, NULL);
 }
 
 
@@ -1125,25 +1138,38 @@ void check_smul(int i, mpz_t result_cxy, mpz_t x, mpz_t y, Paillier pai)
  * @param y
  * @param pai
  */
-void check_scmp(int i, mpz_t result_cmp_x_y, mpz_t x, mpz_t y, Paillier pai)
+void check_scmp(int i, mpz_t eres, mpz_t m_1, mpz_t m_2, Paillier pai)
 {
-    mpz_t z, answer;
-    mpz_inits(z, answer, NULL);
-    if (mpz_cmp(x, y) >= 0)
+    mpz_t half_N;
+    mpz_init(half_N);
+    mpz_div_ui(half_N, pai.pk.N, 2);
+    if (mpz_cmp(m_1, half_N) > 0)
     {
-        mpz_set_si(answer, 0);
-    } else mpz_set_si(answer, 1);
+        mpz_sub(m_1, m_1, pai.pk.N);
+    }
+    if (mpz_cmp(m_2, half_N) > 0)
+    {
+        mpz_sub(m_2, m_2, pai.pk.N);
+    }
 
-    pai.decrypt(z, result_cmp_x_y);
-    if (mpz_cmp(z, answer) != 0)
+    mpz_t res, m_1_cmp_m_2;
+    mpz_inits(res, m_1_cmp_m_2, NULL);
+
+    if (mpz_cmp(m_1, m_2) >= 0)
     {
-        gmp_printf("dec answer x>=y? = %Zd\n", z);
-        gmp_printf("right answer %Zd\n", answer);
+        mpz_set_si(m_1_cmp_m_2, 0);
+    } else mpz_set_si(m_1_cmp_m_2, 1);
+
+    pai.decrypt(res, eres);
+    if (mpz_cmp(res, m_1_cmp_m_2) != 0)
+    {
+        gmp_printf("res = %Zd\n", res);
+        gmp_printf("right res %Zd\n", m_1_cmp_m_2);
         printf("SCMP error!\n");
         printf("i = %d is error \n", i);
         exit(-1);
     }
-    mpz_clears(z, answer, NULL);
+    mpz_clears(res, m_1_cmp_m_2, NULL);
 }
 
 /**

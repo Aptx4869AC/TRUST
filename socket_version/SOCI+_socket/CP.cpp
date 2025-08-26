@@ -25,25 +25,18 @@ int main()
     double average_time_HE_ScalarMul = 0;
     double average_time_HE_Subtraction = 0;
 
-    double average_time_TEE_SMUL = 0;
-    double average_time_TEE_SCMP_version1 = 0;
-    double average_time_TEE_SCMP_version2 = 0;
-    double average_time_TEE_SABS = 0;
-    double average_time_TEE_SDIV = 0;
     double average_time_SMUL = 0;
     double average_time_SCMP = 0;
     double average_time_SSBA = 0;
     double average_time_SDIV = 0;
+    double average_time_Trust_FMUL = 0;
+    double average_time_Trust_FCMP = 0;
     double average_time_Trust_FEQL = 0;
     double average_time_Trust_FABS = 0;
     double average_time_Trust_FTRN_v1 = 0;
-    double average_time_Trust_FTRN_v2 = 0;
 
-    double average_bytes_TEE_SMUL = 0;
-    double average_bytes_TEE_SCMP_version1 = 0;
-    double average_bytes_TEE_SCMP_version2 = 0;
-    double average_bytes_TEE_SABS = 0;
-    double average_bytes_TEE_SDIV = 0;
+    double average_bytes_Trust_FMUL = 0;
+    double average_bytes_Trust_FCMP = 0;
     double average_bytes_SMUL = 0;
     double average_bytes_SCMP = 0;
     double average_bytes_SSBA = 0;
@@ -51,9 +44,6 @@ int main()
     double average_bytes_Trust_FEQL = 0;
     double average_bytes_Trust_FABS = 0;
     double average_bytes_Trust_FTRN_v1 = 0;
-    double average_bytes_Trust_FTRN_v2 = 0;
-    double average_bytes_PK = 0;
-    double average_bytes_SK = 0;
 
     setrandom(&randstate);
     int server_sock, data_owner_sock;
@@ -150,68 +140,6 @@ int main()
 
     }
 
-    // SOCI-TEE 协议
-    for (int i = 0; i < epoch; i++)
-    {
-        // 临时更换新的x，y，ex,ey
-        mpz_rrandomb(x, randstate, 8); // 8-bit random number
-        mpz_rrandomb(y, randstate, 8); // 8-bit random number
-        cp.pai.encrypt(ex, x);
-        cp.pai.encrypt(ey, y);
-
-        mpz_t eres, es_x, eu_x, eq, ee, q, r, right_q, right_r;
-        mpz_inits(eres, es_x, eu_x, eq, ee, q, r, right_q, right_r, NULL);
-
-        total_bytes = 0.0;
-        start_time = omp_get_wtime();
-        CP_TEE_SMUL(eres, ex, ey, cp, record_bytes_flag);
-        end_time = omp_get_wtime();
-        average_time_TEE_SMUL += end_time - start_time;
-        check_smul(i, eres, x, y, pai); // 验证正确性
-        average_bytes_TEE_SMUL += total_bytes / 1024.0;
-//        printf("%d [NEW-SMUL] time is %f ms\n", i + 1, (end_time - start_time) * 1000);
-
-
-        total_bytes = 0.0;
-        start_time = omp_get_wtime();
-        CP_TEE_SCMP_version1(eres, ex, ey, cp, record_bytes_flag);
-        end_time = omp_get_wtime();
-        average_time_TEE_SCMP_version1 += end_time - start_time;
-        check_scmp(i, eres, x, y, pai); // 验证正确性
-        average_bytes_TEE_SCMP_version1 += total_bytes / 1024.0;
-//        printf("%d [NEW-SCMP_version1] time is %f ms\n", i + 1, (end_time - start_time) * 1000);
-
-        total_bytes = 0.0;
-        start_time = omp_get_wtime();
-        CP_TEE_SCMP_version2(eres, ex, ey, cp, record_bytes_flag);
-        end_time = omp_get_wtime();
-        average_time_TEE_SCMP_version2 += end_time - start_time;
-        check_scmp(i, eres, x, y, pai); // 验证正确性
-        average_bytes_TEE_SCMP_version2 += total_bytes / 1024.0;
-//        printf("%d [NEW-SCMP_version2] time is %f ms\n", i + 1, (end_time - start_time) * 1000);
-
-        total_bytes = 0.0;
-        start_time = omp_get_wtime();
-        CP_TEE_SABS(eres, ex, ey, cp, record_bytes_flag);
-        end_time = omp_get_wtime();
-        average_time_TEE_SABS += end_time - start_time;
-        check_sabs(i, eres, x, y, pai); // 验证正确性
-        average_bytes_TEE_SABS += total_bytes / 1024.0;
-//        printf("%d [NEW-SABS] time is %f ms\n", i + 1, (end_time - start_time) * 1000);
-
-        total_bytes = 0.0;
-        start_time = omp_get_wtime();
-        TEE_SDIV(eq, ee, ex, ey, 10, cp, record_bytes_flag);
-        end_time = omp_get_wtime();
-        average_time_TEE_SDIV += (end_time - start_time);
-        check_sdiv(i, eq, ee, x, y, pai); // 验证正确性
-        average_bytes_TEE_SDIV += total_bytes / 1024.0;
-//        printf("%d [NEW-SDIV] time is  ------  %f ms\n", i + 1, (end_time - start_time) * 1000);
-
-        mpz_clears(eres, es_x, eu_x, eq, ee, q, r, right_q, right_r, NULL);
-//        printf("----------------------------------------------------------\n");
-    }
-
     ifstream file("Data/training_dataADD.csv");  // 打开CSV文件
     string line, value;
 
@@ -251,6 +179,26 @@ int main()
         cp.pai.encrypt(em_2, m_2);
         cp.pai.encrypt(em_3, m_3);
 
+        // MUL
+        total_bytes = 0.0;
+        start_time = omp_get_wtime();
+        CP_TEE_SMUL(eres, em_1, em_2, cp, record_bytes_flag);
+        end_time = omp_get_wtime();
+        average_time_Trust_FMUL += end_time - start_time;
+        check_smul(_epoch, eres, m_1, m_2, pai); // 验证正确性
+        average_bytes_Trust_FMUL += total_bytes / 1024.0;
+//        printf("%d [Trust_FMUL] time is %f ms\n", _epoch + 1, (end_time - start_time) * 1000);
+
+        // CMP
+        total_bytes = 0.0;
+        start_time = omp_get_wtime();
+        CP_TEE_SCMP_version2(eres, em_1, em_2, cp, record_bytes_flag);
+        end_time = omp_get_wtime();
+        average_time_Trust_FCMP += end_time - start_time;
+        check_scmp(_epoch, eres, m_1, m_2, pai); // 验证正确性
+        average_bytes_Trust_FCMP += total_bytes / 1024.0;
+//        printf("%d [Trust_FCMP] time is %f ms\n", _epoch + 1, (end_time - start_time) * 1000);
+
         // EQL
         total_bytes = 0.0;
         start_time = omp_get_wtime();
@@ -284,19 +232,6 @@ int main()
         average_bytes_Trust_FTRN_v1 += total_bytes / 1024.0;
 //        printf("%d [Trust_FTRN_v1] time is %f ms\n", _epoch + 1, (end_time - start_time) * 1000);
 
-        int pi = (int) random() % 2;
-        mpz_set_si(m_1, pi);
-        pai.encrypt(em_1, m_1);
-        // FTRN version2
-        total_bytes = 0.0;
-        start_time = omp_get_wtime();
-        CP_Trust_FTRN_version2(eres, em_1, em_2, em_3, cp, record_bytes_flag);
-        end_time = omp_get_wtime();
-        average_time_Trust_FTRN_v2 += (end_time - start_time);
-        check_ftrn(_epoch, eres, m_1, m_2, m_3, pai); // 验证正确性
-        average_bytes_Trust_FTRN_v2 += total_bytes / 1024.0;
-//        printf("%d [Trust_FTRN_v2] time is %f ms\n", _epoch + 1, (end_time - start_time) * 1000);
-
         mpz_clears(m_1, m_2, m_3, em_1, em_2, em_3, eres, res, NULL);
 //        printf("----------------------------------------------------------\n");
 
@@ -307,37 +242,31 @@ int main()
             break;
         }
     }
-    
+
     // 协议测试
-    printf("SMUL (%d average) time is  ------  %f ms\n", epoch, average_time_SMUL / epoch * 1000);
-    printf("SCMP (%d average) time is  ------  %f ms\n", epoch, average_time_SCMP / epoch * 1000);
-    printf("SSBA (%d average) time is  ------  %f ms\n", epoch, average_time_SSBA / epoch * 1000);
-    printf("SDIV (10-bits) (%d average) time is  ------  %f ms\n", epoch, average_time_SDIV / epoch * 1000);
-    printf("NEW-SMUL (%d average) time is  ------  %f ms\n", epoch, average_time_TEE_SMUL / epoch * 1000);
-    printf("NEW-SCMP_version1 (%d average) time is  ------  %f ms\n", epoch, average_time_TEE_SCMP_version1 / epoch * 1000);
-    printf("NEW-SCMP_version2 (%d average) time is  ------  %f ms\n", epoch, average_time_TEE_SCMP_version2 / epoch * 1000);
-    printf("NEW-SABS (%d average) time is  ------  %f ms\n", epoch, average_time_TEE_SABS / epoch * 1000);
-    printf("NEW-SDIV (%d average) time is  ------  %f ms\n", epoch, average_time_TEE_SDIV / epoch * 1000);
+    printf("SOCI+ — SMUL (%d average) time is  ------  %f ms\n", epoch, average_time_SMUL / epoch * 1000);
+    printf("SOCI+ — SCMP (%d average) time is  ------  %f ms\n", epoch, average_time_SCMP / epoch * 1000);
+    printf("SOCI+ — SSBA (%d average) time is  ------  %f ms\n", epoch, average_time_SSBA / epoch * 1000);
+    printf("SOCI+ — SDIV (10-bits) (%d average) time is  ------  %f ms\n", epoch, average_time_SDIV / epoch * 1000);
+
+    printf("Trust_FMUL (%d average) time is  ------  %f ms\n", epoch, average_time_Trust_FMUL / epoch * 1000);
+    printf("Trust_FCMP (%d average) time is  ------  %f ms\n", epoch, average_time_Trust_FCMP / epoch * 1000);
     printf("Trust_FEQL (%d average) time is  ------  %f ms\n", _epoch, average_time_Trust_FEQL / _epoch * 1000);
     printf("Trust_FABS (%d average) time is  ------  %f ms\n", _epoch, average_time_Trust_FABS / _epoch * 1000);
-    printf("Trust_FTRN_v1 (%d average) time is  ------  %f ms\n", _epoch, average_time_Trust_FTRN_v1 / _epoch * 1000);
-    printf("Trust_FTRN_v2 (%d average) time is  ------  %f ms\n", _epoch, average_time_Trust_FTRN_v2 / _epoch * 1000);
+    printf("Trust_FTRN (%d average) time is  ------  %f ms\n", _epoch, average_time_Trust_FTRN_v1 / _epoch * 1000);
 
     if (record_bytes_flag)
     {
-        printf("SMUL (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_SMUL / epoch);
-        printf("SCMP (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_SCMP / epoch);
-        printf("SSBA (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_SSBA / epoch);
-        printf("SDIV (10-bits) (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_SDIV / epoch);
-        printf("NEW-SMUL (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_TEE_SMUL / epoch);
-        printf("NEW-SCMP_version1 (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_TEE_SCMP_version1 / epoch);
-        printf("NEW-SCMP_version2 (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_TEE_SCMP_version2 / epoch);
-        printf("NEW-SABS (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_TEE_SABS / epoch);
-        printf("NEW-SDIV (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_TEE_SDIV / epoch);
+        printf("SOCI+ — SMUL (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_SMUL / epoch);
+        printf("SOCI+ — SCMP (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_SCMP / epoch);
+        printf("SOCI+ — SSBA (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_SSBA / epoch);
+        printf("SOCI+ — SDIV (10-bits) (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_SDIV / epoch);
+
+        printf("Trust_FMUL (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_Trust_FMUL / epoch);
+        printf("Trust_FCMP (%d average) Communication Costs is  ---  %f KB\n", epoch, average_bytes_Trust_FCMP / epoch);
         printf("Trust_FEQL (%d average) Communication Costs is  ---  %f KB\n", _epoch, average_bytes_Trust_FEQL / _epoch);
         printf("Trust_FABS (%d average) Communication Costs is  ---  %f KB\n", _epoch, average_bytes_Trust_FABS / _epoch);
-        printf("Trust_FTRN_v1 (%d average) Communication Costs is  ---  %f KB\n", _epoch, average_bytes_Trust_FTRN_v1 / _epoch);
-        printf("Trust_FTRN_v2 (%d average) Communication Costs is  ---  %f KB\n", _epoch, average_bytes_Trust_FTRN_v2 / _epoch);
+        printf("Trust_FTRN (%d average) Communication Costs is  ---  %f KB\n", _epoch, average_bytes_Trust_FTRN_v1 / _epoch);
     }
 
     return 0;

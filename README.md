@@ -8,12 +8,12 @@
 - #### **local_version**  
   
   - `Baseline`: mini-batch 梯度下降线性回归的 C++ 实现，底层训练，明文版本
-  - `SDTE_C++`: mini-batch 梯度下降线性回归基于 `SDTE` 的 C++ 实现，支持 AES 加密，密文版本 
-  - `SDTE_SGX`: mini-batch 梯度下降线性回归基于 `SDTE` 的 SGX 实现，结合 AES 加密与 TEE，密文版本
+  - `SDTE_C++`: mini-batch 梯度下降线性回归基于 `SDTE` 的 C++ 实现，支持 AES-GCM 加密，密文版本 
+  - `SDTE_SGX`: mini-batch 梯度下降线性回归基于 `SDTE` 的 SGX 实现，结合 AES-GCM 加密与 TEE，密文版本
   - `SEAT_C++`: mini-batch 梯度下降线性回归基于 `SEAT` 的 C++ 实现，支持 FastPai 加密，密文版本
   - `POCF_C++`: `POCF` 协议的本地 C++ 可运行版本
   - `SOCI_C++`: `SOCI` 协议的本地 C++ 可运行版本
-  - `TRUST_C++`: `SOCI+` 和 `TRUST` 协议的本地 C++ 可运行版本，相当于  `SOCI+_C++` 和`TRUST_C++` 的实现，涵盖对比方案
+  - `SOCI+_C++`: 包含 `SOCI+` 和 `TRUST` 协议的本地 C++ 可运行版本，相当于  `SOCI+_C++` 和`TRUST_C++` 的实现，涵盖对比方案
   
 - #### **socket_version**  
   
@@ -54,6 +54,14 @@ Windows和Linux平台的Socket实现存在显著性能差异。相同代码（`F
   - TCP/IP协议栈在不同系统实现细节不同
   - 内存管理和缓冲区优化程度不同
 
+
+Linux `simple_version/TRUST_C++` - perf report
+  - 733 context-switches                                                                        
+  - 0 cpu-migrations
+
+Linux  `socket_version/SOCI+_socket`
+  - 906 context-switches                                                                                                                 
+  - 68 cpu-migrations
 
 
 ### Window

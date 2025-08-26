@@ -598,21 +598,16 @@ namespace PHESPACE
                       mpz_cmp_ui(p_another_mod_q, 0) != 0 &&
                       mpz_cmp_ui(q_another_mod_p, 0) != 0 &&
                       mpz_cmp_ui(q_another_mod_q, 0) != 0;
+            mpz_clears(p_another_gcd_q_another, p_another_mod_p, p_another_mod_q, q_another_mod_p, q_another_mod_q, NULL);
+
 //            int p_q = areCoprime(p, q);
 //            int p_p_another = areCoprime(p, p_another);
 //            int p_q_another = areCoprime(p, q_another);
 //            int q_p_another = areCoprime(q, p_another);
 //            int q_q_another = areCoprime(q, q_another);
 //            int p_another_q_another = areCoprime(p_another, q_another);
-//            printf("p_q = %d\n", p_q);
-//            printf("p_p_another = %d\n", p_p_another);
-//            printf("p_q_another = %d\n", p_q_another);
-//            printf("q_p_another = %d\n", q_p_another);
-//            printf("q_q_another = %d\n", q_q_another);
-//            printf("p_another_q_another = %d\n", p_another_q_another);
 //            int res = p_q && p_p_another && p_q_another && q_p_another && q_q_another && p_another_q_another;
-            mpz_clears(p_another_gcd_q_another, p_another_mod_p, p_another_mod_q, q_another_mod_p, q_another_mod_q,
-                       NULL);
+
             return res;
         }
 
@@ -631,15 +626,6 @@ namespace PHESPACE
 //            printf("l_k = %d\n", l_k);
             mpz_t p, q, P, Q;
             mpz_inits(p, q, P, Q, NULL);
-
-//            mpz_rrandomb(p, randstate, l_k / 2);//P: l_k / 2 bit
-//            get_odd_len_integer(p, l_k / 2);
-//            get_odd_len_integer(q, l_k / 2);
-//            while (mpz_cmp(p, q) == 0) {
-//                get_odd_len_integer(q, l_k / 2);
-//            }
-//            printf("p 的比特长度为 %ld bits\n", mpz_sizeinbase(p, 2));
-//            printf("q 的比特长度为 %ld bits\n", mpz_sizeinbase(q, 2));
 
             do
             {

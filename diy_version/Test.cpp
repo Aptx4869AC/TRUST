@@ -160,10 +160,13 @@ int main()
 
     mpz_t m1, m2;
     mpz_inits(m1, m2, NULL);
+
     double float_m1 = 4869.2345;
+    printf("float_m1 = %.4f\n", float_m1);
     mpz_set_si(m1, float_m1 * pow(10, 2 * alpha));
     gmp_printf("m1 = %Zd\n", m1);
     double float_m2 = 1412.6789;
+    printf("float_m2 = %.4f\n", float_m2);
     mpz_set_si(m2, float_m2 * pow(10, 2 * alpha));
     gmp_printf("m2 = %Zd\n", m2);
 
@@ -183,7 +186,5 @@ int main()
     printf("m1 + m2 = %.4f\n", value);
 
     printf("\n\n");
-
-
     return 0;
 }
